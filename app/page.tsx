@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-// Declare WebApp globally
-declare const WebApp: any;
-
-interface Userdata {
+// Define the shape of WebApp globally (replace any with explicit types)
+interface TelegramUser {
   id: number;
   first_name: string;
   last_name?: string;
@@ -14,13 +12,24 @@ interface Userdata {
   is_premium?: boolean;
 }
 
+interface WebAppInitDataUnsafe {
+  user?: TelegramUser;
+}
+
+interface TelegramWebApp {
+  initDataUnsafe: WebAppInitDataUnsafe;
+}
+
+// Declare WebApp globally
+declare const WebApp: TelegramWebApp | undefined; // Use undefined to account for the global object potentially not existing
+
 export default function Home() {
-  const [userData, setUserData] = useState<Userdata | null>(null);
+  const [userData, setUserData] = useState<TelegramUser | null>(null);
 
   useEffect(() => {
-    // Assuming WebApp.initDataUnsafe is defined in the global scope by Telegram WebApp SDK
-    if (WebApp.initDataUnsafe.user) {
-      setUserData(WebApp.initDataUnsafe.user as Userdata);
+    // Check if WebApp and initDataUnsafe exist in the global scope
+    if (WebApp?.initDataUnsafe?.user) {
+      setUserData(WebApp.initDataUnsafe.user);
     }
   }, []);
 
