@@ -1,23 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import Script from "next/script";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
-// Ensure fonts are in the 'public' directory
-const geistSans = localFont({
-  src: "/fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "/fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Telegram mini app",
-  description: "A simple telegram mini app using Next.js 14",
+  title: 'Telegram Mini App',
+  description: 'A simple Telegram Mini App using Next.js 14'
 };
 
 export default function RootLayout({
@@ -28,16 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script
-          src="https://telegram.org/js/telegram-web-app.js"
-          strategy="beforeInteractive"
-        />
+        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
