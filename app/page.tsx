@@ -1,9 +1,10 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from "react";
+import WebApp from '@twa-dev/sdk'
+import { useEffect, useState } from 'react'
 
-// Define the shape of WebApp globally (replace any with explicit types)
-interface TelegramUser {
+// Define the interface for user data
+interface UserData {
   id: number;
   first_name: string;
   last_name?: string;
@@ -12,26 +13,14 @@ interface TelegramUser {
   is_premium?: boolean;
 }
 
-interface WebAppInitDataUnsafe {
-  user?: TelegramUser;
-}
-
-interface TelegramWebApp {
-  initDataUnsafe: WebAppInitDataUnsafe;
-}
-
-// Declare WebApp globally
-declare const WebApp: TelegramWebApp | undefined; // Use undefined to account for the global object potentially not existing
-
 export default function Home() {
-  const [userData, setUserData] = useState<TelegramUser | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null)
 
   useEffect(() => {
-    // Check if WebApp and initDataUnsafe exist in the global scope
-    if (WebApp?.initDataUnsafe?.user) {
-      setUserData(WebApp.initDataUnsafe.user);
+    if (WebApp.initDataUnsafe.user) {
+      setUserData(WebApp.initDataUnsafe.user as UserData)
     }
-  }, []);
+  }, [])
 
   return (
     <main className="p-4">
@@ -41,8 +30,8 @@ export default function Home() {
           <ul>
             <li>ID: {userData.id}</li>
             <li>First Name: {userData.first_name}</li>
-            {userData.last_name && <li>Last Name: {userData.last_name}</li>}
-            {userData.username && <li>Username: {userData.username}</li>}
+            <li>Last Name: {userData.last_name || 'N/A'}</li>
+            <li>Username: {userData.username || 'N/A'}</li>
             <li>Language Code: {userData.language_code}</li>
             <li>Is Premium: {userData.is_premium ? 'Yes' : 'No'}</li>
           </ul>
@@ -51,6 +40,5 @@ export default function Home() {
         <div>Loading...</div>
       )}
     </main>
-  );
+  )
 }
-
